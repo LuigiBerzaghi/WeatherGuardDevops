@@ -1,6 +1,7 @@
 package com.fiap.WeatherGuard.controller;
 
 import com.fiap.WeatherGuard.dto.UsuarioDTO;
+
 import com.fiap.WeatherGuard.mapper.UsuarioMapper;
 import com.fiap.WeatherGuard.model.Usuario;
 import com.fiap.WeatherGuard.service.UsuarioService;
@@ -13,11 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
-import java.util.List;
 
 @SecurityRequirement(name = "bearerAuth")
 @RestController
@@ -51,24 +49,30 @@ public class UsuarioController {
         return ResponseEntity.ok(dtoPage);
     }
 
-
     // Buscar usuário por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+        UsuarioDTO dto = UsuarioMapper.toDTO(usuario);
+        return ResponseEntity.ok(dto);
     }
+
 
     // Cadastrar novo usuário
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@Valid @RequestBody Usuario usuario) {
+    public ResponseEntity<UsuarioDTO> cadastrar(@Valid @RequestBody Usuario usuario) {
         Usuario novoUsuario = usuarioService.cadastrar(usuario);
-        return ResponseEntity.status(201).body(novoUsuario);
+        UsuarioDTO dto = UsuarioMapper.toDTO(novoUsuario);
+        return ResponseEntity.status(201).body(dto);
     }
+
 
     // Atualizar dados do usuário
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.atualizar(id, usuario));
+    public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
+        Usuario atualizado = usuarioService.atualizar(id, usuario);
+        UsuarioDTO dto = UsuarioMapper.toDTO(atualizado);
+        return ResponseEntity.ok(dto);
     }
 
     // Deletar usuário
@@ -77,12 +81,13 @@ public class UsuarioController {
         usuarioService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-    // Retornar dados do usuário logado
     
+    // Retornar dados do usuário logado
     @GetMapping("/me")
     public ResponseEntity<UsuarioDTO> me(@AuthenticationPrincipal Usuario usuario) {
-        return ResponseEntity.ok(new UsuarioDTO(usuario));
+        return ResponseEntity.ok(UsuarioMapper.toDTO(usuario));
     }
+
 
 
 }

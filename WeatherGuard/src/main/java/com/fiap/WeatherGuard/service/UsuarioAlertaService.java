@@ -30,11 +30,4 @@ public class UsuarioAlertaService {
         return usuarioAlertaRepository.findByUsuarioOrderByIdDesc(usuario);
     }
 
-    // Marcar alerta como visualizado
-    public UsuarioAlerta marcarComoVisualizado(Long id) {
-        UsuarioAlerta ua = usuarioAlertaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Relação usuário-alerta não encontrada."));
-        ua.setVisualizado(true);
-        return usuarioAlertaRepository.save(ua);
-    }
 }

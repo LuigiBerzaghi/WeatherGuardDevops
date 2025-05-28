@@ -10,8 +10,7 @@ public class AlertaMapper {
                 ua.getAlerta().getTipo(),
                 ua.getAlerta().getDescricao(),
                 ua.getAlerta().getCidade(),
-                ua.getAlerta().getData(),
-                ua.isVisualizado()
+                ua.getAlerta().getData()
         );
     }
 }

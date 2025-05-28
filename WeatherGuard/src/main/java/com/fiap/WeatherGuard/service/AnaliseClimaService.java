@@ -44,15 +44,15 @@ public class AnaliseClimaService {
             double temperatura = resposta.getMain() != null && resposta.getMain().get("temp") != null
                     ? ((Number) resposta.getMain().get("temp")).doubleValue() : 0;
 
-            if (chuva > 50) {
+            if (chuva > 25) {
                 tipo = "Alagamento";
-                descricao = "Risco de alagamento detectado (chuva > 50mm/h)";
-            } else if (vento > 80) {
+                descricao = "Risco de alagamento detectado";
+            } else if (vento > 60) {
                 tipo = "Vendaval";
-                descricao = "Risco de vendaval detectado (vento > 80km/h)";
-            } else if (temperatura > 38) {
+                descricao = "Risco de vendaval detectado";
+            } else if (temperatura > 35) {
                 tipo = "Onda de Calor";
-                descricao = "Risco de calor extremo detectado (temperatura > 38°C)";
+                descricao = "Risco de calor extremo detectado";
             }
 
             if (tipo != null) {

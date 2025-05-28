@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "alertas")
@@ -16,7 +19,7 @@ public class Alerta {
     private Long id;
 
     @NotBlank(message = "O tipo do alerta é obrigatório")
-    private String tipo; // Ex: chuva, vento, calor
+    private String tipo; 
 
     @NotBlank(message = "A descrição do alerta é obrigatória")
     private String descricao;
@@ -26,6 +29,10 @@ public class Alerta {
 
     @NotNull(message = "A data do alerta é obrigatória")
     private LocalDateTime data;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "alerta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UsuarioAlerta> usuarios;
 
     // Construtores
     public Alerta() {}

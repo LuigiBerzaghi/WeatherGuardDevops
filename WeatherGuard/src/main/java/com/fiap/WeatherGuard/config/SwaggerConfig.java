@@ -33,7 +33,7 @@ public class SwaggerConfig {
                 .description("API REST para alertas climáticos baseados em eventos extremos")
                 .contact(new Contact()
                     .name("Luigi Berzaghi")
-                    .email("luigi@email.com")
+                    .email("luigisespedes@gmail.com")
                     .url("https://github.com/LuigiBerzaghi")
                 )
             );

@@ -6,12 +6,17 @@ import com.fiap.WeatherGuard.model.Usuario;
 import com.fiap.WeatherGuard.model.UsuarioAlerta;
 import com.fiap.WeatherGuard.service.UsuarioAlertaService;
 import com.fiap.WeatherGuard.service.UsuarioService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/usuario-alertas")
 public class UsuarioAlertaController {
@@ -22,21 +27,14 @@ public class UsuarioAlertaController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Listar alertas de um usuário (ex: GET /api/usuario-alertas/usuario/5)
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<AlertaDTO>> listarAlertasPorUsuario(@PathVariable Long usuarioId) {
-        Usuario usuario = usuarioService.buscarPorId(usuarioId);
-        List<UsuarioAlerta> alertas = usuarioAlertaService.listarAlertasDoUsuario(usuario);
+    // Listar alertas de um usuário 
+    @GetMapping("/usuario/me")
+    public ResponseEntity<List<AlertaDTO>> listarMeusAlertas(@AuthenticationPrincipal Usuario usuarioAutenticado) {
+        List<UsuarioAlerta> alertas = usuarioAlertaService.listarAlertasDoUsuario(usuarioAutenticado);
         List<AlertaDTO> resposta = alertas.stream()
                 .map(AlertaMapper::toDTO)
                 .toList();
         return ResponseEntity.ok(resposta);
     }
 
-    // Marcar alerta como visualizado 
-    @PutMapping("/visualizar/{usuarioAlertaId}")
-    public ResponseEntity<UsuarioAlerta> marcarComoVisualizado(@PathVariable Long usuarioAlertaId) {
-        UsuarioAlerta atualizado = usuarioAlertaService.marcarComoVisualizado(usuarioAlertaId);
-        return ResponseEntity.ok(atualizado);
-    }
 }

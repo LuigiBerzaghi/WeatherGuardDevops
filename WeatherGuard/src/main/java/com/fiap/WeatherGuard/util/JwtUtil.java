@@ -11,10 +11,10 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🔐 Chave secreta segura (gerada via OpenSSL)
+    //Chave secreta segura 
     private static final String SECRET = "9G+uuvV7zcs9UuNZoRKn2DN5HBBPtu97M0FMLvjL6Lo=";
 
-    // 🛠️ Converte a String para objeto Key
+    //Converte a String para objeto Key
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     private static final long EXPIRATION_TIME = 86400000; // 1 dia

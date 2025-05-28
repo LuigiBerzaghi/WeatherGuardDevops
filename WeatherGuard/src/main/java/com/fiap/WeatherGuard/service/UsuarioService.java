@@ -56,10 +56,12 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
     
+    // Listar todos os usuários com paginação
     public Page<Usuario> listarTodos(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
 
+    // Listar todos os usuários de uma determinada cidade com paginação
     public Page<Usuario> buscarPorCidade(String cidade, Pageable pageable) {
         return usuarioRepository.findByCidadeIgnoreCaseContaining(cidade, pageable);
     }

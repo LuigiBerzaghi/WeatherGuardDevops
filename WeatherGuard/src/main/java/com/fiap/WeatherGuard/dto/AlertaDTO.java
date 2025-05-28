@@ -8,16 +8,14 @@ public class AlertaDTO {
     private String descricao;
     private String cidade;
     private LocalDateTime data;
-    private boolean visualizado;
 
     public AlertaDTO() {}
 
-    public AlertaDTO(String tipo, String descricao, String cidade, LocalDateTime data, boolean visualizado) {
+    public AlertaDTO(String tipo, String descricao, String cidade, LocalDateTime data) {
         this.tipo = tipo;
         this.descricao = descricao;
         this.cidade = cidade;
         this.data = data;
-        this.visualizado = visualizado;
     }
 
     // Getters e Setters
@@ -53,12 +51,5 @@ public class AlertaDTO {
         this.data = data;
     }
 
-    public boolean isVisualizado() {
-        return visualizado;
-    }
-
-    public void setVisualizado(boolean visualizado) {
-        this.visualizado = visualizado;
-    }
 }
 
