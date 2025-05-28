@@ -2,6 +2,8 @@ package com.fiap.WeatherGuard.controller;
 
 import com.fiap.WeatherGuard.model.Alerta;
 import com.fiap.WeatherGuard.service.AlertaService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/alertas")
 public class AlertaController {
@@ -16,7 +19,7 @@ public class AlertaController {
     @Autowired
     private AlertaService alertaService;
 
-    // Criar alerta (manual - ex: para testes)
+    // Criar alerta 
     @PostMapping
     public ResponseEntity<Alerta> criarAlerta(@Valid @RequestBody Alerta alerta) {
         Alerta novo = alertaService.criarAlerta(

@@ -17,6 +17,9 @@ public class OpenWeatherResponse {
     @JsonProperty("rain")
     private Map<String, Object> rain;
 
+    @JsonProperty("coord")
+    private Map<String, Object> coord;
+
     @JsonProperty("name")
     private String cidade;
 
@@ -30,6 +33,10 @@ public class OpenWeatherResponse {
 
     public Map<String, Object> getRain() {
         return rain;
+    }
+
+    public Map<String, Object> getCoord() {
+        return coord;
     }
 
     public String getCidade() {

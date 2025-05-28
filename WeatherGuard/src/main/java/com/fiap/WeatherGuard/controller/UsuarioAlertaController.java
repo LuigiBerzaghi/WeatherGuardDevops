@@ -1,5 +1,7 @@
 package com.fiap.WeatherGuard.controller;
 
+import com.fiap.WeatherGuard.dto.AlertaDTO;
+import com.fiap.WeatherGuard.mapper.AlertaMapper;
 import com.fiap.WeatherGuard.model.Usuario;
 import com.fiap.WeatherGuard.model.UsuarioAlerta;
 import com.fiap.WeatherGuard.service.UsuarioAlertaService;
@@ -22,13 +24,16 @@ public class UsuarioAlertaController {
 
     // Listar alertas de um usuário (ex: GET /api/usuario-alertas/usuario/5)
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<UsuarioAlerta>> listarAlertasPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<AlertaDTO>> listarAlertasPorUsuario(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.buscarPorId(usuarioId);
         List<UsuarioAlerta> alertas = usuarioAlertaService.listarAlertasDoUsuario(usuario);
-        return ResponseEntity.ok(alertas);
+        List<AlertaDTO> resposta = alertas.stream()
+                .map(AlertaMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(resposta);
     }
 
-    // Marcar alerta como visualizado (ex: PUT /api/usuario-alertas/visualizar/10)
+    // Marcar alerta como visualizado 
     @PutMapping("/visualizar/{usuarioAlertaId}")
     public ResponseEntity<UsuarioAlerta> marcarComoVisualizado(@PathVariable Long usuarioAlertaId) {
         UsuarioAlerta atualizado = usuarioAlertaService.marcarComoVisualizado(usuarioAlertaId);

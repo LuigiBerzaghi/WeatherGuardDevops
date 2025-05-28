@@ -36,4 +36,21 @@ public class ClimaClient {
                 })
                 .block();
     }
+    public OpenWeatherResponse buscarClimaPorCidade(String cidade) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/weather")
+                .queryParam("q", cidade)
+                .queryParam("appid", apiKey)
+                .queryParam("units", "metric")
+                .queryParam("lang", "pt_br")
+                .build())
+            .retrieve()
+            .bodyToMono(OpenWeatherResponse.class)
+            .onErrorResume(ex -> {
+                System.err.println("Erro ao buscar clima por cidade: " + ex.getMessage());
+                return Mono.empty();
+            })
+            .block();
+    }
 }

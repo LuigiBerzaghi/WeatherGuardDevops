@@ -8,6 +8,7 @@ import com.fiap.WeatherGuard.service.AlertaService;
 import com.fiap.WeatherGuard.service.UsuarioService;
 import com.fiap.WeatherGuard.service.UsuarioAlertaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,4 +70,26 @@ public class AnaliseClimaService {
             System.err.println("Erro ao analisar clima: " + e.getMessage());
         }
     }
+
+	@Scheduled(fixedRate = 1800000) // a cada 30 minutos (em milissegundos)
+	public void analisePeriodica() {
+	    List<Usuario> usuarios = usuarioService.listarTodos();
+	
+	    for (Usuario usuario : usuarios) {
+	        try {
+	            OpenWeatherResponse resposta = climaClient.buscarClimaPorCidade(usuario.getCidade());
+	
+	            if (resposta != null && resposta.getCidade() != null) {
+	                verificarClimaPorLocalizacao(
+	                    ((Number) resposta.getCoord().get("lat")).doubleValue(),
+	                    ((Number) resposta.getCoord().get("lon")).doubleValue()
+	                );
+	            }
+	        } catch (Exception e) {
+	            System.err.println("Erro ao agendar análise para cidade " + usuario.getCidade() + ": " + e.getMessage());
+	        }
+	    }
+	
+	    System.out.println("✔️ Análise climática agendada executada.");
+	}
 }

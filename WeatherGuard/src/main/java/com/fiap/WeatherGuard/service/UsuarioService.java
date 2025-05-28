@@ -4,6 +4,8 @@ import com.fiap.WeatherGuard.model.Usuario;
 import com.fiap.WeatherGuard.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,4 +55,13 @@ public class UsuarioService {
         }
         usuarioRepository.deleteById(id);
     }
+    
+    public Page<Usuario> listarTodos(Pageable pageable) {
+        return usuarioRepository.findAll(pageable);
+    }
+
+    public Page<Usuario> buscarPorCidade(String cidade, Pageable pageable) {
+        return usuarioRepository.findByCidadeIgnoreCaseContaining(cidade, pageable);
+    }
+
 }
