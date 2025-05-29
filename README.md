@@ -1,120 +1,136 @@
-# 🌪️ WeatherGuard API
+# 🌪️ WeatherGuard - Sistema de Alerta Climático Inteligente
 
-Sistema de Alerta Climático Inteligente - Backend em Java com Spring Boot
-
-A API WeatherGuard monitora variáveis meteorológicas em tempo real (via OpenWeatherMap), identifica condições de risco (como vendavais, chuvas intensas ou calor extremo) e gera alertas automáticos para os usuários cadastrados conforme sua cidade. A aplicação contempla cadastro de usuários, autenticação com JWT, gerenciamento de alertas e consumo de API externa com análise inteligente.
+WeatherGuard é uma solução desenvolvida para proteger vidas em situações de risco causadas por eventos naturais extremos, como chuvas intensas, ventos fortes e temperaturas elevadas. Utilizando dados meteorológicos em tempo real e análise inteligente de condições climáticas, a aplicação gera alertas automáticos para usuários em regiões vulneráveis.
 
 ---
 
-## 📌 Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
-* Java 17
-* Spring Boot 3
-* Spring Data JPA + Oracle DB
-* Spring Security + JWT
-* OpenWeatherMap API (clima em tempo real)
-* Swagger (SpringDoc OpenAPI)
-* Maven
-* Docker (estrutura pronta para deploy)
+### Backend
+
+* **Java 17**
+* **Spring Boot 3**
+* **Spring Data JPA**
+* **Spring Security com JWT**
+* **PostgreSQL**
+* **Hibernate**
+* **OpenWeatherMap API** (dados externos)
+
+### DevOps
+
+* **Docker**
+* **Docker Compose**
+* **Volumes para persistência**
+* **Ambiente isolado com containers para App e Banco**
 
 ---
 
-## 🚀 Como executar localmente
-
-1. Clone o repositório:
+## 🧱 Estrutura do Projeto
 
 ```bash
-git clone https://github.com/LuigiBerzaghi/WeatherGuard.git
-cd WeatherGuard
+WeatherGuard/
+├── docker/
+│   ├── Dockerfile             # Dockerfile da aplicação Java
+├── docker-compose.yml         # Orquestração dos containers
+├── src/                       # Código-fonte Java (Spring Boot)
+├── target/                    # Jar gerado pelo Maven
+├── pom.xml                    # Dependências do projeto
+└── README.md                  # Este arquivo
 ```
 
-2. Configure as credenciais no `application.properties`:
+---
 
-```properties
-spring.datasource.url=jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
-spring.datasource.username=SEU_USUARIO
-spring.datasource.password=SUA_SENHA
-spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
-openweather.api.key=SUA_CHAVE_AQUI
-```
+## ⚙️ Como Executar o Projeto
 
-3. Rode o projeto:
+### 1. Clone o repositório
 
 ```bash
-./mvnw spring-boot:run
+git clone https://github.com/LuigiBerzaghi/WeatherGuardDevops.git
+cd WeatherGuardDevops
 ```
 
-4. Acesse a documentação interativa:
+### 2. Compile o projeto
 
-```
-http://localhost:8080/swagger-ui.html
-```
-
----
-
-## 🔒 Autenticação
-
-Para acessar os endpoints protegidos, utilize o token JWT obtido ao fazer login em:
-
-```
-POST /api/auth/login
+```bash
+mvn clean package -DskipTests
 ```
 
-Exemplo de token:
+### 3. Suba os containers
 
-```json
-{
-  "token": "Bearer eyJhbGciOiJIUzI1NiJ9..."
-}
+```bash
+docker-compose up -d --build
 ```
 
-Utilize este token no botão "Authorize" do Swagger ou no header:
+### 4. Verifique os containers
 
+```bash
+docker ps
 ```
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+### 5. Teste a API
+
+Use o Postman, Insomnia ou curl:
+
+```bash
+curl http://localhost:8080/alertas
 ```
 
 ---
 
-## 📚 Endpoints da API
+## 🔐 Autenticação JWT (opcional)
 
-| Método | Endpoint                                   | Descrição                                      | Corpo da Requisição                                                    | Resposta de Sucesso                        |
-| ------ | ------------------------------------------ | ---------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------ |
-| POST   | `/api/auth/login`                          | Autentica o usuário e retorna o token JWT      | `{ "email": "user@email.com", "senha": "123456" }`                     | `{ "token": "Bearer eyJhbGci..." }`        |
-| POST   | `/api/usuarios`                            | Cadastra um novo usuário                       | `{ "nome": "Luigi", "email": "...", "senha": "...", "cidade": "..." }` | JSON do usuário criado (sem senha)         |
-| GET    | `/api/usuarios`                            | Lista todos os usuários com paginação e filtro | (query params: `page`, `size`, `sort`, `cidade`)                       | Lista paginada de `UsuarioDTO`             |
-| GET    | `/api/usuarios/{id}`                       | Retorna um usuário por ID                      | N/A                                                                    | JSON de `UsuarioDTO`                       |
-| PUT    | `/api/usuarios/{id}`                       | Atualiza os dados de um usuário                | Mesma estrutura do POST `/usuarios`                                    | JSON atualizado do usuário                 |
-| DELETE | `/api/usuarios/{id}`                       | Deleta um usuário                              | N/A                                                                    | Status `204 No Content`                    |
-| GET    | `/api/usuarios/me`                         | Retorna os dados do usuário logado             | Header: `Authorization: Bearer <token>`                                | JSON com `UsuarioDTO`                      |
-| GET    | `/api/usuario-alertas/usuario/{usuarioId}` | Lista os alertas recebidos por um usuário      | Header: JWT                                                            | Lista de `AlertaDTO`                       |
-| POST   | `/api/alertas`                             | Cria um novo alerta manualmente                | `{ "tipo": "Vendaval", "descricao": "...", "cidade": "..." }`          | JSON do alerta criado                      |
-| GET    | `/api/alertas`                             | Lista todos os alertas                         | N/A                                                                    | Lista de `Alerta`                          |
-| GET    | `/api/alertas/{id}`                        | Retorna um alerta por ID                       | N/A                                                                    | JSON de `Alerta`                           |
-| DELETE | `/api/alertas/{id}`                        | Deleta um alerta                               | N/A                                                                    | Status `204 No Content`                    |
-| GET    | `/api/alertas/cidade/{cidade}`             | Lista alertas por cidade                       | N/A                                                                    | Lista de `Alerta`                          |
-| GET    | `/api/clima/analisar?lat=...&lon=...`      | Analisa o clima da localização e gera alertas  | Query params: `lat`, `lon`                                             | "Análise climática concluída com sucesso." |
+Para endpoints protegidos, é necessário enviar o token JWT no cabeçalho:
+
+```http
+Authorization: Bearer <seu-token>
+```
 
 ---
 
-## 📦 Funcionalidades implementadas
+## 🐳 Detalhes da Conteinerização
 
-* [x] API REST com Spring Boot
-* [x] CRUD completo de Usuário e Alertas
-* [x] Autenticação segura com JWT
-* [x] Integração com OpenWeatherMap
-* [x] Lógica de risco climático automatizada
-* [x] Agendamento com `@Scheduled`
-* [x] Associação de alertas a usuários por cidade
-* [x] Documentação Swagger/OpenAPI
-* [x] Paginação, ordenação e filtro por cidade
-* [ ] Dockerfile (em progresso)
-* [ ] Deploy (em progresso)
+### Docker Compose sobe dois containers:
+
+* **App Java** (porta 8080)
+* **Banco PostgreSQL** (porta 5432)
+
+### Banco de dados:
+
+* Nome: `weatherguard`
+* Usuário: `postgres`
+* Senha: `123456`
+
+Volumes são usados para garantir a persistência dos dados.
+
+---
+
+## 🧪 Testes CRUD
+
+1. **POST /alertas** → cria alerta
+2. **GET /alertas** → lista alertas
+3. **PUT /alertas/{id}** → atualiza
+4. **DELETE /alertas/{id}** → remove
+
+---
+
+## 🖼️ Prints e Demonstrações
+
+![docker ps](docs/docker-ps.png)
+![CRUD funcionando](docs/postman-alerta.png)
+
+---
+
+## 📹 Demonstração em Vídeo
+
+Assista ao funcionamento completo no YouTube:
+🔗 [Vídeo Demonstração](https://youtube.com/...) *(substitua pelo seu link)*
 
 ---
 
 ## 👤 Autor
 
-Luigi Berzaghi
-FIAP - Análise e Desenvolvimento de Sistemas
-Global Solution 2025/1
+* **Nome:** Luigi Berzaghi
+* **RM:** 555516
+* **Turma:** 2TDS - Análise e Desenvolvimento de Sistemas
+
+---
