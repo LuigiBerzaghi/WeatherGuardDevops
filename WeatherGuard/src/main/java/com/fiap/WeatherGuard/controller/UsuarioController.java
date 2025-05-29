@@ -17,7 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
-@SecurityRequirement(name = "bearerAuth")
+
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -26,6 +26,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     // Listar todos os usuários
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping
     public ResponseEntity<Page<UsuarioDTO>> listarTodos(
             @RequestParam(defaultValue = "0") int page,
@@ -51,6 +52,7 @@ public class UsuarioController {
 
     // Buscar usuário por ID
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
         Usuario usuario = usuarioService.buscarPorId(id);
         UsuarioDTO dto = UsuarioMapper.toDTO(usuario);
@@ -69,6 +71,7 @@ public class UsuarioController {
 
     // Atualizar dados do usuário
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
         Usuario atualizado = usuarioService.atualizar(id, usuario);
         UsuarioDTO dto = UsuarioMapper.toDTO(atualizado);
@@ -76,6 +79,7 @@ public class UsuarioController {
     }
 
     // Deletar usuário
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         usuarioService.deletar(id);
@@ -83,11 +87,9 @@ public class UsuarioController {
     }
     
     // Retornar dados do usuário logado
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/me")
     public ResponseEntity<UsuarioDTO> me(@AuthenticationPrincipal Usuario usuario) {
         return ResponseEntity.ok(UsuarioMapper.toDTO(usuario));
     }
-
-
-
 }
