@@ -69,10 +69,10 @@ docker ps
 
 ### 5. Teste a API
 
-Use o Postman, Insomnia ou curl:
+Use o Swagger:
 
 ```bash
-curl http://localhost:8080/alertas
+curl [http://localhost:8080/alertas](http://localhost:8080/swagger-ui/index.html)
 ```
 
 ---
