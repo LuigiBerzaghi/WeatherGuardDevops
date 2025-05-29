@@ -77,12 +77,26 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-## 🔐 Autenticação JWT (opcional)
+## 🔒 Autenticação
 
-Para endpoints protegidos, é necessário enviar o token JWT no cabeçalho:
+Para acessar os endpoints protegidos, utilize o token JWT obtido ao fazer login em:
 
-```http
-Authorization: Bearer <seu-token>
+```
+POST /api/auth/login
+```
+
+Exemplo de token:
+
+```json
+{
+  "token": "Bearer eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+Utilize este token no botão "Authorize" do Swagger ou no header:
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ---
