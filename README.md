@@ -123,7 +123,7 @@ Volumes são usados para garantir a persistência dos dados.
 ## 📹 Demonstração em Vídeo
 
 Assista ao funcionamento completo no YouTube:
-🔗 [Vídeo Demonstração](https://youtube.com/...) *(substitua pelo seu link)*
+🔗 [Vídeo Demonstração](https://youtube.com/...)
 
 ---
 
