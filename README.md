@@ -118,14 +118,27 @@ Volumes são usados para garantir a persistência dos dados.
 
 ---
 
-## 🧪 Testes CRUD
+## 📚 Endpoints da API
 
-1. **POST /alertas** → cria alerta
-2. **GET /alertas** → lista alertas
-3. **PUT /alertas/{id}** → atualiza
-4. **DELETE /alertas/{id}** → remove
+| Método | Endpoint                                   | Descrição                                      | Corpo da Requisição                                                    | Resposta de Sucesso                        |
+| ------ | ------------------------------------------ | ---------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------ |
+| POST   | `/api/auth/login`                          | Autentica o usuário e retorna o token JWT      | `{ "email": "user@email.com", "senha": "123456" }`                     | `{ "token": "Bearer eyJhbGci..." }`        |
+| POST   | `/api/usuarios`                            | Cadastra um novo usuário                       | `{ "nome": "Luigi", "email": "...", "senha": "...", "cidade": "..." }` | JSON do usuário criado (sem senha)         |
+| GET    | `/api/usuarios`                            | Lista todos os usuários com paginação e filtro | (query params: `page`, `size`, `sort`, `cidade`)                       | Lista paginada de `UsuarioDTO`             |
+| GET    | `/api/usuarios/{id}`                       | Retorna um usuário por ID                      | N/A                                                                    | JSON de `UsuarioDTO`                       |
+| PUT    | `/api/usuarios/{id}`                       | Atualiza os dados de um usuário                | Mesma estrutura do POST `/usuarios`                                    | JSON atualizado do usuário                 |
+| DELETE | `/api/usuarios/{id}`                       | Deleta um usuário                              | N/A                                                                    | Status `204 No Content`                    |
+| GET    | `/api/usuarios/me`                         | Retorna os dados do usuário logado             | Header: `Authorization: Bearer <token>`                                | JSON com `UsuarioDTO`                      |
+| GET    | `/api/usuario-alertas/usuario/{usuarioId}` | Lista os alertas recebidos por um usuário      | Header: JWT                                                            | Lista de `AlertaDTO`                       |
+| POST   | `/api/alertas`                             | Cria um novo alerta manualmente                | `{ "tipo": "Vendaval", "descricao": "...", "cidade": "..." }`          | JSON do alerta criado                      |
+| GET    | `/api/alertas`                             | Lista todos os alertas                         | N/A                                                                    | Lista de `Alerta`                          |
+| GET    | `/api/alertas/{id}`                        | Retorna um alerta por ID                       | N/A                                                                    | JSON de `Alerta`                           |
+| DELETE | `/api/alertas/{id}`                        | Deleta um alerta                               | N/A                                                                    | Status `204 No Content`                    |
+| GET    | `/api/alertas/cidade/{cidade}`             | Lista alertas por cidade                       | N/A                                                                    | Lista de `Alerta`                          |
+| GET    | `/api/clima/analisar?lat=...&lon=...`      | Analisa o clima da localização e gera alertas  | Query params: `lat`, `lon`                                             | "Análise climática concluída com sucesso." |
 
 ---
+
 
 ## 🖼️ Prints e Demonstrações
 
