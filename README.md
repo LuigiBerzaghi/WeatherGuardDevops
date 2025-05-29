@@ -72,7 +72,7 @@ docker ps
 Use o Swagger:
 
 ```bash
-curl [http://localhost:8080/alertas](http://localhost:8080/swagger-ui/index.html)
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
