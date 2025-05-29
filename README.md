@@ -46,7 +46,7 @@ WeatherGuard/
 
 ```bash
 git clone https://github.com/LuigiBerzaghi/WeatherGuardDevops.git
-cd WeatherGuardDevops
+cd WeatherGuardDevops/WeatherGuard
 ```
 
 ### 2. Compile o projeto
