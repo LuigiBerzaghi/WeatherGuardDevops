@@ -49,25 +49,13 @@ git clone https://github.com/LuigiBerzaghi/WeatherGuardDevops.git
 cd WeatherGuardDevops/WeatherGuard
 ```
 
-### 2. Compile o projeto
+### 2. Execute o script de automação
 
 ```bash
-mvn clean package -DskipTests
+bash start.sh
 ```
 
-### 3. Suba os containers
-
-```bash
-docker-compose up -d --build
-```
-
-### 4. Verifique os containers
-
-```bash
-docker ps
-```
-
-### 5. Teste a API
+### 3. Teste a API
 
 Use o Swagger:
 
