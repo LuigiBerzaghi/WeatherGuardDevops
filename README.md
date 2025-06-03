@@ -142,10 +142,12 @@ Assista ao funcionamento completo no YouTube:
 
 ---
 
-## 👤 Autor
+## 👨‍💻 Autores
 
-* **Nome:** Luigi Berzaghi
-* **RM:** 555516
-* **Turma:** 2TDS - Análise e Desenvolvimento de Sistemas
+**Luigi Berzaghi** - RM555516
+
+**Guilherme Pelissari** - RM558445
+
+**Cauã dos Santos** - RM559093
 
 ---
